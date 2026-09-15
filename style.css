@@ -522,18 +522,24 @@ body {
 
 
 
+
+
+
+
 /* =========================================================
-   NATURAL FULL-PAGE A4 PRINT ENGINE (LARGE FONT & PADDING)
+   A4 PRINT-ONLY HIGH-IMPACT ENGINE (LARGE PRINT TYPOGRAPHY)
    ========================================================= */
 @page {
   size: A4 portrait;
-  margin: 10mm;
+  margin: 8mm 10mm;
 }
 
 @media print {
+  /* অনাকাঙ্ক্ষিত ওয়েবসাইট অন-স্ক্রিন এলিমেন্ট হাইড করা */
   .no-print,
   .portal-container,
-  .action-buttons {
+  .action-buttons,
+  nav, header, footer {
     display: none !important;
   }
 
@@ -542,19 +548,18 @@ body {
     margin: 0 !important;
     padding: 0 !important;
     width: 100% !important;
+    font-family: 'Arial', 'Helvetica', sans-serif !important;
+    color: #000000 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Container: Removed forced flex stretch to stop vertical pulling */
   .marksheet {
     width: 100% !important;
     max-width: 100% !important;
-    height: auto !important;
     box-sizing: border-box !important;
-    padding: 15px !important;
-    border: 3px solid #000 !important;
-    box-shadow: none !important;
+    padding: 20px !important;
+    border: 4px solid #000000 !important;
     background-color: #ffffff !important;
     display: block !important;
     page-break-inside: avoid !important;
@@ -562,119 +567,166 @@ body {
 
   /* --- HEADER SECTION --- */
   .top-header {
-    margin-bottom: 20px !important;
-    padding-bottom: 12px !important;
-    border-bottom: 4px solid #00cccc !important;
+    margin-bottom: 25px !important;
+    padding-bottom: 15px !important;
+    border-bottom: 5px solid #00cccc !important;
   }
 
   .marksheet-logo {
-    width: 90px !important;
-    height: 90px !important;
+    width: 110px !important; /* লোগোর সাইজ বাড়ানো হয়েছে */
+    height: 110px !important;
+    object-fit: contain !important;
   }
 
+  .header-center {
+    text-align: center !important;
+  }
+
+  /* স্কুলের নাম (বিশাল ও বোল্ড) */
   .header-center h1 {
-    font-size: 30px !important;
+    font-size: 36px !important;
     font-weight: 900 !important;
-    margin-bottom: 6px !important;
+    text-transform: uppercase !important;
+    color: #8b0000 !important;
+    margin: 0 0 6px 0 !important;
+    line-height: 1.1 !important;
+    letter-spacing: 1px !important;
   }
 
+  /* পরীক্ষার নাম */
   .header-center h2 {
-    font-size: 18px !important;
+    font-size: 22px !important;
     font-weight: 800 !important;
+    color: #111111 !important;
     margin: 6px 0 !important;
   }
 
-  .header-center h3 {
-    font-size: 16px !important;
-    font-weight: 800 !important;
-    padding: 6px 24px !important;
+  /* প্রোগ্রেস রিপোর্ট ব্যাজ */
+  .header-center h3, 
+  .progress-report-badge {
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    letter-spacing: 1.5px !important;
+    padding: 8px 30px !important;
+    background-color: #0073e6 !important;
+    color: #ffffff !important;
+    display: inline-block !important;
+    margin-top: 6px !important;
+    border-radius: 4px !important;
   }
 
-  /* --- STUDENT INFO & GRADING SECTION --- */
+  /* --- STUDENT INFO SECTION --- */
   .top-info-row {
-    margin: 20px 0 !important;
-    gap: 15px !important;
+    margin: 25px 0 !important;
+    gap: 20px !important;
   }
 
   .student-table td {
-    font-size: 16px !important;
-    padding: 10px 14px !important;
-    font-weight: 700 !important;
+    font-size: 18px !important;
+    padding: 12px 16px !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
   }
 
   .student-table td.label-cell {
-    font-size: 15px !important;
-    font-weight: 800 !important;
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    background-color: #f2f2f2 !important;
   }
 
-  /* Grading Table */
+  .student-table td:nth-child(2) {
+    font-size: 19px !important;
+    font-weight: 900 !important;
+    color: #003399 !important;
+  }
+
+  /* Grading Table Block */
   .grading-section {
-    width: 180px !important;
-    max-width: 180px !important;
+    width: 220px !important;
+    max-width: 220px !important;
   }
 
   .grading-title {
-    font-size: 12px !important;
-    font-weight: 800 !important;
-    padding: 5px !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    padding: 6px !important;
   }
 
   .grading-table th, 
   .grading-table td {
-    font-size: 12px !important;
-    padding: 6px 2px !important;
-    font-weight: 700 !important;
-  }
-
-  /* --- TABLES & MARKS SECTION --- */
-  .assessment-title {
-    font-size: 22px !important;
-    font-weight: 900 !important;
-    margin: 22px 0 14px 0 !important;
-  }
-
-  /* Result Main Table */
-  .result-table th {
-    font-size: 15px !important;
+    font-size: 13px !important;
+    padding: 7px 4px !important;
     font-weight: 800 !important;
-    padding: 12px 6px !important;
+    border: 1px solid #000000 !important;
+  }
+
+  /* --- ASSESSMENT TITLE & MARKS TABLES --- */
+  .assessment-title {
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    margin: 30px 0 15px 0 !important;
+    text-align: center !important;
+    color: #8b0000 !important;
+    text-transform: uppercase !important;
+  }
+
+  .result-table th {
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    padding: 14px 8px !important;
+    background-color: #e6f2ff !important;
+    border: 2px solid #000000 !important;
   }
 
   .result-table td {
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    padding: 12px 6px !important;
-  }
-
-  /* Summary Table */
-  .final-summary {
-    margin: 20px 0 !important;
-  }
-
-  .final-summary th,
-  .final-summary td {
-    font-size: 16px !important;
+    font-size: 17px !important;
     font-weight: 800 !important;
-    padding: 12px 8px !important;
+    padding: 14px 8px !important;
+    border: 2px solid #000000 !important;
+  }
+
+  .result-table td:first-child {
+    font-size: 17px !important;
+    padding-left: 14px !important;
+  }
+
+  /* Final Summary Table */
+  .final-summary {
+    margin: 25px 0 !important;
+  }
+
+  .final-summary th {
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    padding: 14px 10px !important;
+    background-color: #e6f2ff !important;
+    border: 2px solid #000000 !important;
+  }
+
+  .final-summary td {
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    padding: 14px 10px !important;
+    border: 2px solid #000000 !important;
   }
 
   .verified-note {
-    font-size: 14px !important;
-    font-weight: 800 !important;
-    margin: 18px 0 !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
+    margin: 20px 0 !important;
   }
 
   /* --- SIGNATURE AREA --- */
   .signature-area {
-    margin-top: 40px !important;
+    margin-top: 55px !important;
   }
 
   .sign-img {
-    height: 45px !important;
+    height: 55px !important;
   }
 
   .sign-label {
-    font-size: 14px !important;
-    font-weight: 800 !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
   }
 }
