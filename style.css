@@ -497,16 +497,19 @@ body {
   transform: translateY(-1px);
 }
 
+
+
+
 /* =========================================================
-   3. 100% A4 PRINT ENGINE (@media print & @page)
+   100% FULL-PAGE A4 PRINT ENGINE (FIXED FULL SHEET FIT)
    ========================================================= */
 @page {
   size: A4 portrait;
-  margin: 8mm 10mm 8mm 10mm; /* Clean A4 Page Margins */
+  margin: 6mm 8mm 6mm 8mm; /* পেজের চারপাশের মার্জিন কমিয়ে আনা হয়েছে */
 }
 
 @media print {
-  /* Hide search form & screen control elements */
+  /* স্ক্রিনের বাটন ও অনাকাঙ্ক্ষিত এলিমেন্ট হাইড করা */
   .no-print,
   .portal-container,
   .action-buttons {
@@ -515,105 +518,138 @@ body {
 
   html, body {
     background: #ffffff !important;
-    padding: 0 !important;
     margin: 0 !important;
+    padding: 0 !important;
     width: 100% !important;
-    height: auto !important;
-    min-height: auto !important;
-    overflow: visible !important;
+    height: 100% !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .result-wrapper {
-    margin: 0 !important;
-    padding: 0 !important;
     display: block !important;
     width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
+  /* Marksheet Container to Stretch Across Full A4 Sheet */
   .marksheet {
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    border: none !important;
+    min-height: 280mm !important; /* A4 পেজের পুরো উচ্চতা নেওয়ার জন্য (297mm Total) */
+    box-sizing: border-box !important;
+    padding: 12mm 10mm !important; /* প্রিন্ট কপির ভেতরের স্পেসিং */
+    border: 2px solid #000 !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     background-color: #ffffff !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+    
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
-
-  /* Table styling enhancements for physical paper */
-  .student-table td,
-  .grading-table th,
-  .grading-table td,
-  .result-table th,
-  .result-table td,
-  .final-summary th,
-  .final-summary td {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  
+  /* Header Section */
+  .top-header {
+    margin-bottom: 10px !important;
+    padding-bottom: 8px !important;
+    border-bottom: 3px solid #00cccc !important;
   }
 
-  .sign-img {
-    height: 24px !important;
-  }
-}
-
-/* MOBILE RESPONSIVE OPTIMIZATION */
-@media (max-width: 600px) {
-  body {
-    padding: 8px 4px;
-  }
-
-  .marksheet {
-    padding: 12px 8px;
+  .marksheet-logo {
+    width: 65px !important;
+    height: 65px !important;
   }
 
   .header-center h1 {
-    font-size: 14px;
+    font-size: 22px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .header-center h2 {
+    font-size: 15px !important;
+    margin: 4px 0 !important;
+  }
+
+  .header-center h3 {
+    font-size: 13px !important;
+    padding: 4px 20px !important;
+  }
+
+  /* Student Info Table */
+  .top-info-row {
+    margin: 10px 0 !important;
+    gap: 12px !important;
   }
 
   .student-table td {
-    font-size: 9.5px;
-    padding: 3px 4px;
+    font-size: 13px !important;
+    padding: 6px 10px !important;
   }
 
+  .student-table td.label-cell {
+    font-size: 12px !important;
+  }
+
+  /* Grading Table */
   .grading-section {
-    width: 82px;
-    max-width: 82px;
+    width: 130px !important;
+    max-width: 130px !important;
   }
 
-  .grading-table th,
-  .grading-table td {
-    font-size: 7px;
-    padding: 1px;
-  }
-
-  .result-table th,
-  .result-table td {
-    font-size: 8.5px !important;
+  .grading-title {
+    font-size: 9.5px !important;
     padding: 3px 1px !important;
   }
 
-  .result-table td:first-child {
-    font-size: 8px !important;
+  .grading-table th, 
+  .grading-table td {
+    font-size: 9.5px !important;
+    padding: 3px 1px !important;
   }
 
-  .final-summary th,
+  /* Section Titles & Tables */
+  .assessment-title {
+    font-size: 17px !important;
+    margin: 12px 0 8px 0 !important;
+  }
+
+  .result-table th {
+    font-size: 12.5px !important;
+    padding: 7px 3px !important;
+  }
+
+  .result-table td {
+    font-size: 12px !important;
+    padding: 7px 3px !important;
+  }
+
+  .final-summary th, 
   .final-summary td {
-    font-size: 8.5px !important;
-    padding: 4px 1px !important;
+    font-size: 13px !important;
+    padding: 8px 4px !important;
   }
 
-  .action-buttons {
-    gap: 6px;
+  .verified-note {
+    font-size: 12px !important;
+    margin: 10px 0 !important;
   }
 
-  .action-buttons button {
-    padding: 6px 10px;
-    font-size: 10px;
+  .signature-area {
+    margin-top: 15px !important;
+  }
+
+  .sign-img {
+    height: 35px !important;
+  }
+
+  .sign-label {
+    font-size: 11px !important;
+    padding-top: 4px !important;
   }
 }
+
