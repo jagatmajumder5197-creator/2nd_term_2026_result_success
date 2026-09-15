@@ -6,38 +6,24 @@ let allStudents = [];
 const subjects = [
   { name: 'BENGALI', fm: 'FMB', written: 'WTB', oral: 'OLB' },
   { name: 'ENGLISH', fm: 'FME', written: 'WTE', oral: 'OLE' },
-  { name: 'MATHS', fm: 'FMM', written: 'WTM', oral: 'OLM' },
+  { name: 'MATHEMATICS', fm: 'FMM', written: 'WTM', oral: 'OLM' },
   { name: 'HINDI', fm: 'FMHN', written: 'WTHN', oral: 'OLHN' },
   { name: 'COMPUTER', fm: 'FMCM', written: 'WTCM', oral: 'OLCM' },
   { name: 'GK', fm: 'FMGK', written: 'WTGK', oral: 'OLGK' },
   { name: 'EVS', fm: 'FMEV', written: 'WTEV', oral: 'OLEV' },
   { name: 'LSC', fm: 'FMLSC', written: 'WTLSC', oral: 'OLLSC' },
   { name: 'PSC', fm: 'FMPSC', written: 'WTPSC', oral: 'OLPSC' },
-  { name: 'Beng Rhym', fm: 'FMRYMB', written: 'WTRYMB', oral: 'OLRYMB' },
-  { name: 'Eng Rhym', fm: 'FMRYME', written: 'WTRYME', oral: 'OLRYME' },
+  { name: 'BENG RHYM', fm: 'FMRYMB', written: 'WTRYMB', oral: 'OLRYMB' },
+  { name: 'ENG RHYM', fm: 'FMRYME', written: 'WTRYME', oral: 'OLRYME' },
   { name: 'HISTORY', fm: 'FMHS', written: 'WTHS', oral: 'OLHS' },
   { name: 'GEOGRAPHY', fm: 'FMG', written: 'WTG', oral: 'OLG' }
 ];
 
-/* ----------------------------------------------------------------
-   Master Sheet-এর CLASS values-এর সাথে হুবহু মিলিয়ে লেখা লজিক্যাল অর্ডার।
-   এই লিস্টে না থাকা কোনো ক্লাস থাকলে সেটা তালিকার শেষে চলে যাবে
-   (তখনও alphabetically সাজানো থাকবে যাতে হারিয়ে না যায়)।
----------------------------------------------------------------- */
 const CLASS_ORDER = [
-  'NUR_A', 'NUR_B',
-  'LKG_A', 'LKG_B',
-  'UKG_A', 'UKG_B',
-  'I (A)', 'I (B)',
-  'II (Two)',
-  'III (Three)',
-  'IV (Four)',
-  'V (Five)',
-  'VI (Six)',
-  'VII (Seven)',
-  'VIII (Eight)',
-  'IX (Nine)',
-  'X (Ten)'
+  'NUR_A', 'NUR_B', 'LKG_A', 'LKG_B', 'UKG_A', 'UKG_B',
+  'I (A)', 'I (B)', 'II (Two)', 'III (Three)', 'IV (Four)',
+  'V (Five)', 'VI (Six)', 'VII (Seven)', 'VIII (Eight)',
+  'IX (Nine)', 'X (Ten)'
 ];
 
 function classSortIndex(cls) {
@@ -45,13 +31,6 @@ function classSortIndex(cls) {
   return idx === -1 ? CLASS_ORDER.length + 1 : idx;
 }
 
-/* ----------------------------------------------------------------
-   ★★★ CRITICAL FIX ★★★
-   Sheet-এর কোনো ঘরে "N" (Not Applicable) বা খালি/অসংখ্যাসূচক কিছু
-   থাকলে সাধারণ Number() সেটাকে NaN বানিয়ে দেয়, আর একবার NaN যোগ হলে
-   পুরো total/percentage/grade সব NaN হয়ে যায় (নিচের দিকে ছড়িয়ে পড়ে)।
-   safeNum() সবসময় একটা সংখ্যা ফেরত দেবে — অসংখ্যাসূচক কিছু পেলে 0.
----------------------------------------------------------------- */
 function safeNum(val) {
   const n = Number(val);
   return isNaN(n) ? 0 : n;
@@ -64,11 +43,18 @@ window.onload = async () => {
   const stuSelect = document.getElementById('studentSelect');
   const viewBtn = document.getElementById('viewResultBtn');
 
+  // ১০ সেকেন্ডের বেশি সময় লাগলে অটো-এরর দেখাবে
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
   try {
     const response = await fetch(WEB_APP_URL + '?t=' + Date.now(), {
       method: 'GET',
-      cache: 'no-store'
+      cache: 'no-store',
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) throw new Error('Network response was not ok');
 
@@ -82,20 +68,19 @@ window.onload = async () => {
 
     loadClassDropdown();
   } catch (err) {
+    clearTimeout(timeoutId);
     console.error('API Error:', err);
     loaderWrap.classList.add('hidden');
     errorBox.classList.remove('hidden');
-    errorBox.innerHTML = '<div style="padding:15px;">Failed to Load Result Data.<br>Please Try Again Later.</div>';
+    errorBox.innerHTML = '<div>Failed to Load Result Data. Please check Google Apps Script permissions (Must be set to "Anyone").</div>';
   }
 };
 
 function loadClassDropdown() {
   const classSelect = document.getElementById('classSelect');
-  classSelect.innerHTML = '<option value="">SELECT CLASS</option>';
+  classSelect.innerHTML = '<option value="">CLASS_SEC</option>';
 
   const classes = [...new Set(allStudents.map(s => s.CLASS).filter(Boolean))];
-
-  // Master Sheet অনুযায়ী লজিক্যাল অর্ডার — alphabetical নয়
   classes.sort((a, b) => {
     const diff = classSortIndex(a) - classSortIndex(b);
     return diff !== 0 ? diff : String(a).localeCompare(String(b));
@@ -112,31 +97,22 @@ function loadClassDropdown() {
 document.getElementById('classSelect').addEventListener('change', function () {
   const cls = this.value;
 
-  // ক্লাস অনুযায়ী নির্দিষ্ট সিগনেচার ফাইলের ম্যাপিং
   const signatureMap = {
-    "NUR_A": "nura.png",
-    "NUR_B": "nurb.png",
-    "LKG_A": "lkga.png",
-    "LKG_B": "lkgb.png",
-    "UKG_A": "ukga.png",
-    "UKG_B": "ukgb.png",
-    "I (A)": "ia.png",
-    "I (B)": "ib.png",
-    "II (Two)": "iia.png",
-    "III (Three)": "iiia.png",
-    "IV (Four)": "iva.png",
-    "V (Five)": "va.png",
-    "VI (Six)": "via.png",
-    "VII (Seven)": "viia.png",
-    "VIII (Eight)": "viiia.png",
-    "IX (Nine)": "jagatinfras.png",
+    "NUR_A": "nura.png", "NUR_B": "nurb.png",
+    "LKG_A": "lkga.png", "LKG_B": "lkgb.png",
+    "UKG_A": "ukga.png", "UKG_B": "ukgb.png",
+    "I (A)": "ia.png", "I (B)": "ib.png",
+    "II (Two)": "iia.png", "III (Three)": "iiia.png",
+    "IV (Four)": "iva.png", "V (Five)": "va.png",
+    "VI (Six)": "via.png", "VII (Seven)": "viia.png",
+    "VIII (Eight)": "viiia.png", "IX (Nine)": "jagatinfras.png",
     "X (Ten)": "jagatinfras.png"
   };
 
   const signImg = document.getElementById('classTeacherSign');
   if (signImg) {
     if (cls && signatureMap[cls]) {
-      signImg.src = `Signatures/${signatureMap[cls]}`;
+      signImg.src = `Images/${signatureMap[cls]}`;
       signImg.style.display = 'block';
     } else {
       signImg.style.display = 'none';
@@ -144,13 +120,11 @@ document.getElementById('classSelect').addEventListener('change', function () {
   }
 
   const studentSelect = document.getElementById('studentSelect');
-  studentSelect.innerHTML = '<option value="">STUDENTS NAME</option>';
+  studentSelect.innerHTML = '<option value="">STUDENTS_NAME</option>';
 
   if (!cls) return;
 
   const students = allStudents.filter(s => String(s.CLASS) === String(cls));
-
-  // Roll Number অনুযায়ী ascending sort (alphabetical নয়)
   students.sort((a, b) => safeNum(a.ROLL) - safeNum(b.ROLL));
 
   students.forEach(student => {
@@ -165,21 +139,34 @@ document.getElementById('viewResultBtn').addEventListener('click', showResult);
 
 function showResult() {
   const id = document.getElementById('studentSelect').value;
-
   if (!id) {
     alert('Please select a student.');
     return;
   }
 
   const student = allStudents.find(s => String(s.I_D) === String(id));
-
   if (!student) {
     alert('No result found.');
     return;
   }
 
   renderResult(student);
-  document.getElementById('resultWrapper').scrollIntoView({ behavior: 'smooth' });
+
+  document.querySelector('.portal-container').classList.add('hidden');
+  const resultWrapper = document.getElementById('resultWrapper');
+  resultWrapper.classList.remove('hidden');
+  resultWrapper.classList.add('animate-pop');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function searchAgain() {
+  const resultWrapper = document.getElementById('resultWrapper');
+  resultWrapper.classList.add('hidden');
+  resultWrapper.classList.remove('animate-pop');
+  document.querySelector('.portal-container').classList.remove('hidden');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function getGrade(percent) {
@@ -193,15 +180,28 @@ function getGrade(percent) {
   return 'D';
 }
 
-function getFmBreakdown(fm, writtenVal, studentClass) {
+function getFmBreakdown(fm, writtenVal, studentClass, subject) {
   if (fm === 100) return { written: 90, oral: 10 };
   if (fm === 25) return { written: '', oral: 25 };
+
   if (fm === 50) {
-    const wt = String(writtenVal || '').trim().toUpperCase();
-    if (wt === 'N' || wt === '') return { written: '', oral: 50 };
-    if (String(studentClass) === 'UKG_A') return { written: 40, oral: 10 };
+    const gkClasses = ['NUR_A', 'NUR_B', 'LKG_A', 'LKG_B'];
+    const isGk = (subject === 'GK');
+
+    if (gkClasses.includes(studentClass) && isGk) {
+      return { written: '', oral: 50 };
+    }
+
+    const hindiClasses = ['UKG_A', 'UKG_B', 'I (A)', 'I (B)'];
+    const isHindi = (subject === 'HN' || subject === 'HINDI');
+
+    if (hindiClasses.includes(studentClass) && isHindi) {
+      return { written: 40, oral: 10 };
+    }
+
     return { written: 45, oral: 5 };
   }
+
   return { written: fm, oral: 0 };
 }
 
@@ -231,8 +231,6 @@ function calculateRank(cls, studentId) {
 }
 
 function renderResult(student) {
-  document.getElementById('resultWrapper').classList.remove('hidden');
-
   document.getElementById('studentName').innerText = student.STUDENTS_NAME || '';
   document.getElementById('fatherName').innerText = student.FATHERS_NAME || '';
   document.getElementById('studentClass').innerText = student.CLASS || '';
@@ -243,6 +241,8 @@ function renderResult(student) {
 
   let grandFullMarks = 0;
   let grandObtained = 0;
+  let hasFailed = false;
+  let rowsHtml = '';
 
   subjects.forEach(sub => {
     const fm = safeNum(student[sub.fm]);
@@ -251,42 +251,55 @@ function renderResult(student) {
     const obtainedWritten = safeNum(student[sub.written]);
     const obtainedOral = safeNum(student[sub.oral]);
     const total = obtainedWritten + obtainedOral;
-    const percentage = (total / fm) * 100;
+    const percentage = fm > 0 ? (total / fm) * 100 : 0;
     const grade = getGrade(percentage);
+
+    if (grade === 'D') {
+      hasFailed = true;
+    }
 
     grandFullMarks += fm;
     grandObtained += total;
 
-    const fmStructure = getFmBreakdown(fm, student[sub.written], student.CLASS);
+    const writtenDisplay = (obtainedWritten === 0) ? '-' : obtainedWritten;
+    const oralDisplay = (obtainedOral === 0) ? '-' : obtainedOral;
 
-    // Full Marks (written/oral/fm) => regular weight
-    // Obtained Marks (obt-cell class) => bold weight
-    const row = `
+    const fmStructure = getFmBreakdown(fm, student[sub.written], student.CLASS, sub.name);
+
+    rowsHtml += `
       <tr>
-        <td>${sub.name}</td>
+        <td><b>${sub.name}</b></td>
         <td>${fmStructure.written}</td>
         <td>${fmStructure.oral}</td>
         <td>${fm}</td>
-        <td class="obt-cell">${obtainedWritten}</td>
-        <td class="obt-cell">${obtainedOral}</td>
-        <td class="obt-cell">${total}</td>
-        <td>${percentage.toFixed(2)}%</td>
-        <td>${grade}</td>
+        <td class="spacer-col"></td>
+        <td><b>${writtenDisplay}</b></td>
+        <td><b>${oralDisplay}</b></td>
+        <td><b>${total}</b></td>
+        <td><b>${Math.round(percentage)}%</b></td>
+        <td><b>${grade}</b></td>
       </tr>
     `;
-
-    tbody.innerHTML += row;
   });
+
+  tbody.innerHTML = rowsHtml;
 
   const grandPercentage = grandFullMarks > 0 ? (grandObtained / grandFullMarks) * 100 : 0;
   const grandGrade = getGrade(grandPercentage);
   const calculatedRank = calculateRank(student.CLASS, student.I_D);
 
+  const artVal = student.ART || student.Art || 'A<sup>+</sup>';
+  document.getElementById('artGrade').innerHTML = `<b>${artVal}</b>`;
+
   document.getElementById('grandFullMarks').innerText = grandFullMarks;
-  document.getElementById('grandTotal').innerText = grandObtained;
-  document.getElementById('grandPercentage').innerText = grandPercentage.toFixed(2) + '%';
-  document.getElementById('grandGrade').innerText = grandGrade;
-  document.getElementById('grandRank').innerHTML = formatOrdinal(calculatedRank);
+  document.getElementById('grandTotal').innerHTML = `<b>${grandObtained}</b>`;
+  document.getElementById('grandPercentage').innerHTML = `<b>${grandPercentage.toFixed(2)}%</b>`;
+  
+  const resultElem = document.getElementById('grandResult');
+  resultElem.innerHTML = `<b>${hasFailed ? 'Fail' : 'Pass'}</b>`;
+
+  document.getElementById('grandGrade').innerHTML = `<b>${grandGrade}</b>`;
+  document.getElementById('grandRank').innerHTML = `<b>${formatOrdinal(calculatedRank)}</b>`;
 }
 
 function formatOrdinal(value) {
@@ -303,15 +316,16 @@ function formatOrdinal(value) {
   return n + '<sup>th</sup>';
 }
 
+/* 100% Precision A4 PDF Downloader Engine */
 function downloadPDF() {
   const element = document.getElementById('marksheet');
   const studentName = document.getElementById('studentName').innerText || 'Student';
 
   const opt = {
-    margin: 0,
+    margin: [8, 8, 8, 8],
     filename: 'Result_' + studentName + '.pdf',
     image: { type: 'jpeg', quality: 1 },
-    html2canvas: { scale: 2, useCORS: true },
+    html2canvas: { scale: 2, useCORS: true, logging: false },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
