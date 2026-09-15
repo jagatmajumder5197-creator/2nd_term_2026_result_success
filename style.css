@@ -499,16 +499,38 @@ body {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* =========================================================
-   100% FLEXIBLE & PROPORTIONAL LARGE-FONT A4 PRINT ENGINE
+   NATURAL FULL-PAGE A4 PRINT ENGINE (LARGE FONT & PADDING)
    ========================================================= */
 @page {
   size: A4 portrait;
-  margin: 8mm 10mm 8mm 10mm;
+  margin: 10mm;
 }
 
 @media print {
-  /* Hide non-printable controls */
   .no-print,
   .portal-container,
   .action-buttons {
@@ -520,171 +542,139 @@ body {
     margin: 0 !important;
     padding: 0 !important;
     width: 100% !important;
-    height: 100% !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  .result-wrapper {
-    display: block !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  /* Marksheet Main Container */
+  /* Container: Removed forced flex stretch to stop vertical pulling */
   .marksheet {
     width: 100% !important;
     max-width: 100% !important;
-    min-height: 277mm !important;
+    height: auto !important;
     box-sizing: border-box !important;
-    padding: 14mm 12mm !important;
-    border: 2px solid #000 !important;
+    padding: 15px !important;
+    border: 3px solid #000 !important;
     box-shadow: none !important;
-    border-radius: 0 !important;
     background-color: #ffffff !important;
-    
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    
+    display: block !important;
     page-break-inside: avoid !important;
-    break-inside: avoid !important;
   }
 
   /* --- HEADER SECTION --- */
   .top-header {
-    margin-bottom: 14px !important;
-    padding-bottom: 10px !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 12px !important;
     border-bottom: 4px solid #00cccc !important;
   }
 
   .marksheet-logo {
-    width: 75px !important;
-    height: 75px !important;
+    width: 90px !important;
+    height: 90px !important;
   }
 
   .header-center h1 {
-    font-size: 25px !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.5px !important;
-    line-height: 1.2 !important;
+    font-size: 30px !important;
+    font-weight: 900 !important;
+    margin-bottom: 6px !important;
   }
 
   .header-center h2 {
-    font-size: 16px !important;
-    font-weight: 700 !important;
-    margin: 4px 0 !important;
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    margin: 6px 0 !important;
   }
 
   .header-center h3 {
-    font-size: 14px !important;
-    font-weight: 700 !important;
-    padding: 5px 22px !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    padding: 6px 24px !important;
   }
 
   /* --- STUDENT INFO & GRADING SECTION --- */
   .top-info-row {
-    margin: 14px 0 !important;
-    gap: 14px !important;
+    margin: 20px 0 !important;
+    gap: 15px !important;
   }
 
   .student-table td {
-    font-size: 14px !important;
-    padding: 8px 12px !important;
-    line-height: 1.3 !important;
+    font-size: 16px !important;
+    padding: 10px 14px !important;
+    font-weight: 700 !important;
   }
 
   .student-table td.label-cell {
-    font-size: 13px !important;
-    font-weight: 700 !important;
-  }
-
-  .student-table td:nth-child(2) {
     font-size: 15px !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
   }
 
   /* Grading Table */
   .grading-section {
-    width: 145px !important;
-    max-width: 145px !important;
+    width: 180px !important;
+    max-width: 180px !important;
   }
 
   .grading-title {
-    font-size: 11px !important;
-    font-weight: 700 !important;
-    padding: 4px 2px !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    padding: 5px !important;
   }
 
   .grading-table th, 
   .grading-table td {
-    font-size: 11px !important;
-    padding: 4px 2px !important;
+    font-size: 12px !important;
+    padding: 6px 2px !important;
+    font-weight: 700 !important;
   }
 
-  /* --- SECTION TITLES & TABLES --- */
+  /* --- TABLES & MARKS SECTION --- */
   .assessment-title {
-    font-size: 19px !important;
-    font-weight: 800 !important;
-    margin: 16px 0 10px 0 !important;
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    margin: 22px 0 14px 0 !important;
   }
 
   /* Result Main Table */
   .result-table th {
-    font-size: 13px !important;
-    font-weight: 700 !important;
-    padding: 9px 3px !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    padding: 12px 6px !important;
   }
 
   .result-table td {
-    font-size: 13px !important;
-    padding: 9px 3px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    padding: 12px 6px !important;
   }
 
-  .result-table td:first-child {
-    font-size: 13px !important;
-    padding-left: 8px !important;
-  }
-
-  /* Final Summary Table */
+  /* Summary Table */
   .final-summary {
-    margin: 15px 0 !important;
+    margin: 20px 0 !important;
   }
 
-  .final-summary th {
-    font-size: 13.5px !important;
-    font-weight: 800 !important;
-    padding: 9px 5px !important;
-  }
-
+  .final-summary th,
   .final-summary td {
-    font-size: 14px !important;
-    font-weight: 700 !important;
-    padding: 9px 5px !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    padding: 12px 8px !important;
   }
 
-  /* Verified Note */
   .verified-note {
-    font-size: 13px !important;
-    font-weight: 700 !important;
-    margin: 12px 0 !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    margin: 18px 0 !important;
   }
 
   /* --- SIGNATURE AREA --- */
   .signature-area {
-    margin-top: 22px !important;
-    gap: 15px !important;
+    margin-top: 40px !important;
   }
 
   .sign-img {
-    height: 40px !important;
-    margin-bottom: 4px !important;
+    height: 45px !important;
   }
 
   .sign-label {
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    padding-top: 5px !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
   }
 }
