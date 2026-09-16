@@ -19,20 +19,24 @@
 }
 
 html {
-  width: 210mm;
-  height: 297mm;
+  width: 100%;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 0;
 }
 
 body {
-  width: 210mm;
-  height: 297mm;
+  width: 100%;
+  min-height: 100vh;
   margin: 0 auto;
-  padding: 10mm 12mm;
-  background: #ffffff;
+  padding: 20px 12px;
+  background: #f4f6f8;
   color: var(--text-dark);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
@@ -53,58 +57,51 @@ body {
   animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-/* Hide for screen, show only result on A4 */
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ===== PORTAL CONTAINER (A4 OPTIMIZED) ===== */
+/* ===== PORTAL CONTAINER (DESKTOP OPTIMIZED) ===== */
 .portal-container {
   width: 100%;
   max-width: 186mm;
   margin: 0 auto 8mm;
   text-align: center;
   background: #ffffff;
-  padding: 12px;
-  border-radius: 6px;
+  padding: 16px;
+  border-radius: 8px;
   border: 1px solid #e0e0e0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
 
 .portal-logo {
-  width: 52px;
-  height: 52px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
   margin-bottom: 8px;
 }
 
 .portal-container h1 {
   font-family: 'Algerian', serif;
-  font-size: 18px;
+  font-size: 26px;
   font-weight: 700;
   color: #0066ff;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
   line-height: 1.2;
 }
 
 .portal-container h2 {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-dark);
   font-weight: 500;
-  margin-bottom: 2px;
-}
-.portal-container h3 {
-  font-size:14px;
-  letter-spacing: -0.5px;
-  color: #7e22ce;
-  margin-top: -5px;
+  margin-bottom: 4px;
 }
 
+.portal-container h3 {
+  font-size: 15px;
+  letter-spacing: -0.5px;
+  color: #7e22ce;
+  margin-top: 2px;
+  margin-bottom: 12px;
+}
 
 .portal-container select,
 .portal-container button {
@@ -122,11 +119,15 @@ body {
   background-color: #f9f0ff;
 }
 
-
 .portal-container button {
   border: none;
   background: linear-gradient(135deg, #00b09b, #96c93d);
   color: #ffffff;
+  transition: transform 0.1s ease;
+}
+
+.portal-container button:hover {
+  transform: translateY(-1px);
 }
 
 .loader-wrap {
@@ -164,23 +165,24 @@ body {
   display: none !important;
 }
 
-/* ===== RESULT WRAPPER (A4 OPTIMIZED) ===== */
+/* ===== RESULT WRAPPER (A4 / DESKTOP OPTIMIZED) ===== */
 .result-wrapper {
   width: 186mm;
-  height: 277mm;
+  min-height: 277mm;
   margin: 0 auto;
   padding: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .marksheet {
   position: relative;
   width: 186mm;
-  height: 277mm;
+  min-height: 277mm;
   margin: 0 auto;
   padding: 10mm 8mm;
+  background-color: #ffffff;
   background-image: url('Images/bg.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -188,7 +190,7 @@ body {
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
   color: var(--text-black);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   line-height: 1.25;
   border-radius: 2px;
   border: 1px solid #f0f0f0;
@@ -196,7 +198,7 @@ body {
   break-inside: avoid;
 }
 
-/* HEADER FIX (A4 OPTIMIZED - School Name Doesn't Break) */
+/* HEADER SECTION */
 .top-header {
   margin-bottom: 6mm;
   padding-bottom: 4mm;
@@ -215,8 +217,8 @@ body {
 }
 
 .marksheet-logo {
-  width: 12mm;
-  height: 12mm;
+  width: 16mm;
+  height: 16mm;
   object-fit: contain;
 }
 
@@ -227,11 +229,11 @@ body {
 
 .header-center h1 {
   font-family: 'Algerian', serif;
-  font-size: 13pt;
+  font-size: 18pt;
   font-weight: 700;
   color: #990066;
-  letter-spacing: 0.2px;
-  line-height: 1.1;
+  letter-spacing: 0.5px;
+  line-height: 1.15;
   text-transform: uppercase;
   white-space: normal;
   margin: 0;
@@ -240,10 +242,10 @@ body {
 }
 
 .header-center h2 {
-  font-size: 10pt;
+  font-size: 11pt;
   color: #5b21b6;
   font-weight: 700;
-  margin: 1mm 0;
+  margin: 1.5mm 0;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
@@ -252,7 +254,7 @@ body {
   display: inline-block;
   background: #0066cc;
   color: #ffffff;
-  font-size: 9pt;
+  font-size: 9.5pt;
   font-weight: 600;
   padding: 2mm 6mm;
   border-radius: 1.5mm;
@@ -261,7 +263,7 @@ body {
   print-color-adjust: exact;
 }
 
-/* FLEX STUDENT & GRADING TABLE FIX (A4 OPTIMIZED) */
+/* STUDENT & GRADING TABLE ROW */
 .top-info-row {
   display: flex;
   gap: 4mm;
@@ -272,7 +274,7 @@ body {
 }
 
 .student-section {
-  flex: 3; /* Give maximum space to student info */
+  flex: 3;
   min-width: 0;
 }
 
@@ -319,10 +321,10 @@ body {
   print-color-adjust: exact;
 }
 
-/* COMPACT GRADING TABLE AT TOP-RIGHT CORNER (A4 OPTIMIZED) */
+/* GRADING TABLE */
 .grading-section {
-  width: 24mm;
-  max-width: 24mm;
+  width: 26mm;
+  max-width: 26mm;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -330,8 +332,8 @@ body {
 
 .grading-title {
   text-align: center;
-  font-size: 6pt;
-  font-weight: 600;
+  font-size: 6.5pt;
+  font-weight: 700;
   color: var(--text-dark);
   background: var(--mint-bg);
   border: 0.75pt solid var(--table-border);
@@ -370,8 +372,8 @@ body {
 .assessment-title {
   margin: 5mm 0 3mm 0;
   text-align: center;
-  font-family: 'Agency FB', serif;
-  font-size: 12pt;
+  font-family: 'Agency FB', sans-serif, serif;
+  font-size: 13pt;
   font-weight: 700;
   color: #ff0066;
   page-break-inside: avoid;
@@ -380,7 +382,7 @@ body {
   print-color-adjust: exact;
 }
 
-/* TABLE & PROPORTIONAL COLUMN FIX (A4 OPTIMIZED) */
+/* RESULT TABLE */
 .table-responsive {
   width: 100%;
   margin: 4mm 0;
@@ -399,7 +401,7 @@ body {
   padding: 2.5mm 1.5mm;
   text-align: center;
   font-size: 9pt;
-  font-weight: 400; /* Full Marks will be normal text */
+  font-weight: 400;
   color: var(--text-black);
   background: #ffffff;
   line-height: 1.15;
@@ -431,16 +433,14 @@ body {
 .result-table td.obt-marks,
 .result-table td:nth-child(6),
 .result-table td:nth-child(7),
-.result-table td:nth-child(8), 
+.result-table td:nth-child(8),
 .result-table td:nth-child(9),
-.result-table td:nth-child(10)
-{
+.result-table td:nth-child(10) {
   color: #0066ff !important;
   font-weight: 700;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
-
 
 .result-table th.spacer-col,
 .result-table td.spacer-col {
@@ -455,7 +455,7 @@ body {
   print-color-adjust: exact;
 }
 
-/* FINAL SUMMARY TABLE (A4 OPTIMIZED) */
+/* FINAL SUMMARY TABLE */
 .final-summary {
   margin: 5mm 0;
   page-break-inside: avoid;
@@ -498,7 +498,7 @@ body {
   print-color-adjust: exact;
 }
 
-/* SIGNATURE AREA FIX (NO OVERLAPPING - A4 OPTIMIZED) */
+/* SIGNATURE AREA */
 .signature-area {
   display: flex;
   justify-content: space-between;
@@ -536,7 +536,7 @@ body {
   text-overflow: ellipsis;
 }
 
-/* SMALLER BRIGHT BLUE ACTION BUTTONS (A4 OPTIMIZED) */
+/* ACTION BUTTONS */
 .action-buttons {
   display: flex;
   justify-content: center;
@@ -569,11 +569,6 @@ body {
 }
 
 /* ========================================
-   A4 PAPER OPTIMIZED STYLES (UNIFIED LAYOUT)
-   Only for printing on A4 paper (210mm × 297mm)
-   ======================================== */
-
-/* ========================================
    A4 PRINT STYLESHEET (@media print)
    ======================================== */
 @page {
@@ -582,7 +577,6 @@ body {
 }
 
 @media print {
-  /* Core print setup */
   html {
     width: 210mm;
     height: 297mm;
@@ -598,25 +592,21 @@ body {
     background: #ffffff !important;
     color: #000000 !important;
     font-size: 10pt;
+    overflow: hidden !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
-  /* Hide UI navigation and input elements */
   .portal-container,
   .loader-wrap,
   .error-box,
+  .action-buttons,
   nav,
-  button[onclick="window.print()"],
-  button[onclick="downloadPDF()"],
-  button[onclick="searchAgain()"],
-  #viewResultBtn,
-  #classSelect,
-  #studentSelect {
+  button,
+  select {
     display: none !important;
   }
 
-  /* Show result only */
   .result-wrapper {
     display: flex !important;
     width: 186mm !important;
@@ -633,7 +623,7 @@ body {
     height: 277mm !important;
     margin: 0 !important;
     padding: 10mm 8mm !important;
-    background: #ffffff !important;
+    background-color: #ffffff !important;
     box-shadow: none !important;
     border: none !important;
     border-radius: 0 !important;
@@ -644,7 +634,6 @@ body {
     print-color-adjust: exact;
   }
 
-  /* All sections prevent breaks */
   .top-header,
   .top-info-row,
   .assessment-title,
@@ -663,7 +652,6 @@ body {
     break-inside: avoid;
   }
 
-  /* All tables collapse and print exact */
   .student-table,
   .grading-table,
   .result-table,
@@ -673,18 +661,9 @@ body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-
-  /* Ensure background images print */
-  .marksheet {
-    background-attachment: fixed;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
 }
 
-/* ========================================
-   LANDSCAPE PRINT SUPPORT (Optional)
-   ======================================== */
+/* LANDSCAPE PRINT SUPPORT */
 @media print and (orientation: landscape) {
   @page {
     size: A4 landscape;
